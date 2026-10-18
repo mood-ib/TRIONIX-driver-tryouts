@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FTC Driver Practice</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+color-scheme:light;--bg:#fbf5ef;--card:#ffffff;--ink:#111111;--mute:#6a4a3a;--line:#e6d3c3;--acc:#e8541d;--acc2:#111111;--accink:#111111;--warn:#b42318;--ok:#1a7a4f}
+
+
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 "Trebuchet MS","Segoe UI",system-ui,sans-serif}
+main{max-width:920px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:4px 0 12px;letter-spacing:-.01em}h2{font-size:1.1rem;margin:0 0 10px}
+nav{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+nav button{flex:1;min-width:90px;padding:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;font:inherit;font-weight:600;cursor:pointer}
+nav button.on{background:var(--acc);color:var(--accink);border-color:var(--acc)}
+section{display:none;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px}
+section.on{display:block}
+input,select,button{font:inherit}
+input,select{padding:9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-width:0}
+.btn{padding:9px 14px;border:0;border-radius:8px;background:var(--acc);color:var(--accink);font-weight:600;cursor:pointer}
+.btn.sec{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.del{background:transparent;color:var(--warn);border:1px solid var(--line);padding:5px 9px}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:end;margin-bottom:10px}
+.row label{display:flex;flex-direction:column;gap:3px;font-size:.85rem;color:var(--mute);flex:1;min-width:130px}
+.wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{padding:8px 6px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}th{color:var(--mute);font-weight:600}
+.tip{display:flex;align-items:center;justify-content:center;gap:16px;margin:8px 0 14px;padding:14px;border:2px solid var(--acc);border-radius:12px}
+.tip .n{font-size:3.5rem;font-weight:800;min-width:90px;text-align:center;color:var(--acc);line-height:1}
+.tip button{width:84px;height:84px;border-radius:50%;border:0;font-size:2.2rem;font-weight:700;cursor:pointer;background:var(--acc);color:var(--accink)}
+.tip button.m{width:52px;height:52px;font-size:1.6rem;background:transparent;border:1px solid var(--line);color:var(--ink)}
+.mute{color:var(--mute);font-size:.9rem}.chk{display:flex;flex-wrap:wrap;gap:8px 16px;margin:8px 0 12px}
+.chk label{display:flex;gap:6px;align-items:center}
+.rnd{margin:12px 0}.rnd h3{margin:0 0 6px;font-size:1rem}
+.msg{color:var(--ok);font-weight:600;min-height:1.4em}
+h1{color:var(--ink);border-left:8px solid var(--acc);padding-left:10px}
+.now{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-bottom:14px}
+.nw{border:2px solid var(--acc);border-radius:10px;padding:10px 12px;background:var(--card)}
+.nw.nx{border-color:var(--line)}
+.big{font-size:1.15rem;font-weight:800}
+.q{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer}
+.chip.on{background:var(--acc);border-color:var(--acc);font-weight:700}
+.done td{background:#d9f2e4;color:#0d5133;font-weight:600}
+.cur td{background:#ffe3cf}
+.pan{border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:14px;border-top:4px solid var(--c)}
+.pan h3{margin:0 0 10px;font-size:1.05rem;color:var(--ink)}
+.g{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.ct{font-size:.85rem;color:var(--mute);margin-bottom:4px}
+.bar{display:grid;grid-template-columns:minmax(60px,100px) 1fr 40px;gap:8px;align-items:center;margin:6px 0;font-size:.9rem}
+.bar span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bar b{text-align:right}
+.bar.top{font-weight:800}
+.trk{background:var(--bg);border-radius:4px;height:16px}.fill{height:100%;border-radius:4px}
+</style></head><body><main>
+<h1>TRIONIX driver practice</h1>
+<nav id="nav"></nav>
+
+<section id="s-log">
+<div class="now" id="now"></div>
+<h2>Log a run</h2>
+<div class="row">
+<label>Driver 1<select id="d1"></select></label>
+<label>Driver 2<select id="d2"></select></label>
+<label>Score<input id="score" type="number" inputmode="numeric" placeholder="0"></label>
+</div>
+<div class="tip" role="group" aria-label="Tip counter">
+<button class="m" id="tm" aria-label="Remove a tip">−</button>
+<div><div class="n" id="tn" aria-live="polite">0</div><div class="mute" style="text-align:center">tips</div></div>
+<button id="tp" aria-label="Add a tip">+</button></div>
+<div class="row"><button class="btn" id="save">Save run</button><button class="btn sec" id="clr">Reset tips</button><span class="msg" id="msg"></span></div>
+<p class="mute">Both drivers get the run on their record. Tap + the moment a tip happens.</p>
+<h2 style="margin-top:18px">Run history</h2>
+<div class="wrap"><table><thead><tr><th>Driver 1</th><th>Driver 2</th><th>Score</th><th>Tips</th><th></th></tr></thead><tbody id="hist"></tbody></table></div>
+<p class="mute" id="hempty">No runs yet. Save your first run above.</p>
+</section>
+
+<section id="s-stats">
+<h2>Top performers</h2>
+<div class="pan" style="--c:var(--acc)"><h3>Driver 1</h3><div class="g"><div><div class="ct">Average points (highest first)</div><div id="c1p"></div></div><div><div class="ct">Average tips per run (highest first)</div><div id="c1t"></div></div></div></div>
+<div class="pan" style="--c:var(--acc2)"><h3>Driver 2</h3><div class="g"><div><div class="ct">Average points (highest first)</div><div id="c2p"></div></div><div><div class="ct">Average tips per run (highest first)</div><div id="c2t"></div></div></div></div>
+<h2>Driver stats</h2>
+<div class="wrap"><table><thead><tr><th>Driver</th><th>D1 runs</th><th>D1 avg</th><th>D2 runs</th><th>D2 avg</th><th>Overall avg</th><th>Tips/run</th></tr></thead><tbody id="stats"></tbody></table></div>
+<p class="mute" id="sempty">Add drivers on the Drivers tab to see stats.</p>
+</section>
+
+<section id="s-drv">
+<h2>Drivers</h2>
+<div class="row"><label>Name<input id="nm" placeholder="Add a driver"></label><button class="btn" id="add">Add driver</button></div>
+<div class="wrap"><table><tbody id="dl"></tbody></table></div>
+<p class="mute" id="dempty">No drivers yet. Add your team members above.</p>
+<div class="row" style="margin-top:14px"><button class="btn sec" id="exp">Copy backup</button><button class="btn sec" id="imp">Restore backup</button></div>
+<textarea id="bk" rows="3" style="width:100%;display:none;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px" placeholder="Paste backup here, then press Restore backup again"></textarea>
+<p class="mute">Data is saved in this browser only. Use backup to move it to another device.</p>
+</section>
+
+<section id="s-brk">
+<h2>Random pairings</h2>
+<p class="mute">Check who is here. In each round everyone drives once as Driver 1 and once as Driver 2, and pairs never repeat.</p>
+<div class="chk" id="who"></div>
+<div class="row"><label>Rounds<input id="rounds" type="number" min="1" value="1"></label><button class="btn" id="gen">Generate</button></div>
+<div id="out"></div>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let S={drivers:[],runs:[]},tips=0,present={},pending=null;
+try{const r=localStorage.getItem("ftc-driver-practice");if(r)S=JSON.parse(r)}catch(e){}
+const save=()=>{try{localStorage.setItem("ftc-driver-practice",JSON.stringify(S))}catch(e){}};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const nameOf=id=>(S.drivers.find(d=>d.id===id)||{}).name;
+const avg=a=>a.length?(a.reduce((x,y)=>x+y,0)/a.length):null;
+const fmt=v=>v==null?"–":(Math.round(v*10)/10).toString();
+
+function bars(id,items,color,asc){
+ const el=$(id);
+ if(!items.length){el.innerHTML='<p class="mute">No runs yet.</p>';return}
+ items.sort((a,b)=>asc?a.v-b.v:b.v-a.v);
+ const mx=Math.max(...items.map(i=>i.v),1);
+ el.innerHTML=items.map((i,k)=>`<div class="bar${k<3?' top':''}"><span>${esc(i.n)}</span><div class="trk"><div class="fill" style="width:${Math.max(i.v/mx*100,2)}%;background:${color};opacity:${k<3?1:.45}"></div></div><b>${fmt(i.v)}</b></div>`).join("")}
+function charts(){
+ [["1","d1","var(--acc)"],["2","d2","var(--acc2)"]].forEach(([k,f,c])=>{
+  const P=[],T=[];
+  S.drivers.forEach(d=>{const r=S.runs.filter(x=>x[f]===d.id);if(r.length){P.push({n:d.name,v:avg(r.map(x=>x.score))});T.push({n:d.name,v:avg(r.map(x=>x.tips))})}});
+  bars("c"+k+"p",P,c,false);bars("c"+k+"t",T,c,false)})}
+const live=()=>S.sched.filter(m=>!m.done&&nameOf(m.d1)&&nameOf(m.d2));
+function cur(){const L=live();return L.find(m=>m.id===S.cur)||L[0]||null}
+function syncSel(){const c=cur();if(c){$("d1").value=c.d1;$("d2").value=c.d2}}
+function now(){
+ const L=live(),c=cur(),el=$("now"),nx=L.find(m=>m!==c);
+ const f=m=>`${esc(nameOf(m.d1))} (D1) &amp; ${esc(nameOf(m.d2))} (D2)`;
+ if(!S.sched.length){el.innerHTML='<p class="mute">No pairings yet. Generate them on the Pairings tab and the matches will line up here.</p>';return}
+ if(!c){el.innerHTML='<div class="nw"><b>All matches scored.</b> Generate new pairings on the Pairings tab.</div>';return}
+ el.innerHTML=`<div class="nw"><div class="ct">Now playing, round ${c.r}</div><div class="big">${f(c)}</div></div><div class="nw nx"><div class="ct">Up next</div><div>${nx?f(nx)+' (round '+nx.r+')':'Nothing after this one'}</div></div><div class="q">${L.map(m=>`<button class="chip${m===c?' on':''}" data-use="${m.id}">R${m.r}: ${esc(nameOf(m.d1))} &amp; ${esc(nameOf(m.d2))}</button>`).join("")}</div>`}
+function pairs(){
+ if(!S.sched.length)return;
+ const c=cur(),rs=[...new Set(S.sched.map(m=>m.r))];
+ $("out").innerHTML=rs.map(r=>`<div class="rnd"><h3>Round ${r}</h3><div class="wrap"><table><thead><tr><th>Driver 1</th><th>Driver 2</th><th>Result</th><th></th></tr></thead><tbody>${S.sched.filter(m=>m.r===r).map(m=>{
+  const run=m.done&&S.runs.find(x=>x.id===m.done),ok=nameOf(m.d1)&&nameOf(m.d2),isC=c&&c.id===m.id;
+  return `<tr class="${m.done?'done':(isC?'cur':'')}"><td>${esc(nameOf(m.d1)||m.n1)}</td><td>${esc(nameOf(m.d2)||m.n2)}</td><td>${run?run.score+' pts, '+run.tips+' tips':''}</td><td>${m.done?'Scored':(ok?`<button class="btn sec" data-use="${m.id}">${isC?'Playing':'Play'}</button>`:'')}</td></tr>`}).join("")}</tbody></table></div></div>`).join("")}
+const tabs=[["log","Log run"],["stats","Stats"],["drv","Drivers"],["brk","Pairings"]];
+$("nav").innerHTML=tabs.map(t=>`<button data-t="${t[0]}">${t[1]}</button>`).join("");
+function show(t){document.querySelectorAll("section").forEach(s=>s.classList.toggle("on",s.id==="s-"+t));
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.t===t))}
+$("nav").onclick=e=>{if(e.target.dataset.t)show(e.target.dataset.t)};
+
+function render(){
+ S.sched=S.sched||[];
+ const opts=S.drivers.map(d=>`<option value="${d.id}">${esc(d.name)}</option>`).join("");
+ const k1=$("d1").value,k2=$("d2").value;
+ $("d1").innerHTML=opts;$("d2").innerHTML=opts;
+ if(S.drivers.some(d=>d.id===k1))$("d1").value=k1;
+ if(S.drivers.some(d=>d.id===k2))$("d2").value=k2;else if(S.drivers.length>1)$("d2").selectedIndex=1;
+ $("tn").textContent=tips;
+ $("dl").innerHTML=S.drivers.map(d=>`<tr><td>${esc(d.name)}</td><td style="text-align:right"><button class="btn del" data-rm="${d.id}">${pending===d.id?"Tap again to remove":"Remove"}</button></td></tr>`).join("");
+ $("dempty").style.display=S.drivers.length?"none":"";
+ $("stats").innerHTML=S.drivers.map(d=>{
+  const a=S.runs.filter(r=>r.d1===d.id),b=S.runs.filter(r=>r.d2===d.id),all=a.concat(b);
+  return `<tr><td><b>${esc(d.name)}</b></td><td>${a.length}</td><td>${fmt(avg(a.map(r=>r.score)))}</td><td>${b.length}</td><td>${fmt(avg(b.map(r=>r.score)))}</td><td>${fmt(avg(all.map(r=>r.score)))}</td><td>${fmt(avg(all.map(r=>r.tips)))}</td></tr>`}).join("");
+ $("sempty").style.display=S.drivers.length?"none":"";charts();pairs();now();
+ $("hist").innerHTML=S.runs.slice().reverse().map(r=>`<tr><td>${esc(nameOf(r.d1)||r.n1)}</td><td>${esc(nameOf(r.d2)||r.n2)}</td><td>${r.score}</td><td>${r.tips}</td><td><button class="btn del" data-rr="${r.id}" aria-label="Delete run">✕</button></td></tr>`).join("");
+ $("hempty").style.display=S.runs.length?"none":"";
+ $("who").innerHTML=S.drivers.map(d=>`<label><input type="checkbox" data-w="${d.id}" ${present[d.id]===false?"":"checked"}>${esc(d.name)}</label>`).join("")||'<span class="mute">Add drivers first.</span>';
+}
+$("tp").onclick=()=>{tips++;$("tn").textContent=tips;if(navigator.vibrate)try{navigator.vibrate(30)}catch(e){}};
+$("tm").onclick=()=>{tips=Math.max(0,tips-1);$("tn").textContent=tips};
+$("clr").onclick=()=>{tips=0;$("tn").textContent=0};
+$("save").onclick=()=>{
+ const a=$("d1").value,b=$("d2").value,sc=parseFloat($("score").value);
+ if(!a||!b||a===b){$("msg").textContent="Pick two different drivers.";return}
+ if(isNaN(sc)){$("msg").textContent="Enter a score.";return}
+ const rid=uid(),c=cur(),m=(c&&c.d1===a&&c.d2===b)?c:live().find(x=>x.d1===a&&x.d2===b);
+ S.runs.push({id:rid,d1:a,d2:b,n1:nameOf(a),n2:nameOf(b),score:sc,tips,t:Date.now()});
+ if(m){m.done=rid;S.cur=null}
+ save();tips=0;$("score").value="";$("msg").textContent=m?"Run saved. Match scored.":"Run saved.";render();syncSel();
+};
+$("add").onclick=addDriver;$("nm").onkeydown=e=>{if(e.key==="Enter")addDriver()};
+function addDriver(){const n=$("nm").value.trim();if(!n)return;S.drivers.push({id:uid(),name:n});$("nm").value="";save();render()}
+document.body.addEventListener("click",e=>{
+ const rm=e.target.dataset.rm,rr=e.target.dataset.rr;
+ if(rm){if(pending===rm){S.drivers=S.drivers.filter(d=>d.id!==rm);pending=null;save()}else pending=rm;render()}else if(pending){pending=null;render()}
+ if(rr){S.runs=S.runs.filter(r=>r.id!==rr);S.sched.forEach(m=>{if(m.done===rr)m.done=null});save();render();syncSel()}
+});
+$("who").onchange=e=>{if(e.target.dataset.w)present[e.target.dataset.w]=e.target.checked};
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+$("gen").onclick=()=>{
+ const ds=S.drivers.filter(d=>present[d.id]!==false),n=ds.length,out=$("out");
+ if(n<2){out.innerHTML='<p class="mute">Check at least two drivers.</p>';return}
+ let R=Math.max(1,parseInt($("rounds").value)||1);
+ if(R>n-1){R=n-1;$("rounds").value=R}
+ const order=shuffle(ds),offs=shuffle(Array.from({length:n-1},(_,i)=>i+1)).slice(0,R);
+ S.sched=[];
+ offs.forEach((o,ri)=>order.forEach((d,i)=>{const e=order[(i+o)%n];S.sched.push({id:uid(),r:ri+1,d1:d.id,d2:e.id,n1:d.name,n2:e.name,done:null})}));
+ S.cur=null;save();render();syncSel();
+};
+const useM=e=>{const u=e.target.dataset.use;if(!u)return;S.cur=u;save();render();syncSel();$("msg").textContent=""};
+$("out").onclick=e=>{useM(e);if(e.target.dataset.use)show("log")};$("now").onclick=useM;
+
+$("exp").onclick=async()=>{const t=JSON.stringify(S);$("bk").style.display="block";$("bk").value=t;$("bk").select();try{await navigator.clipboard.writeText(t)}catch(e){}};
+$("imp").onclick=()=>{const b=$("bk");if(b.style.display==="none"||!b.value.trim()){b.style.display="block";b.value="";b.focus();return}
+ try{const o=JSON.parse(b.value);if(Array.isArray(o.drivers)&&Array.isArray(o.runs)){S=o;save();render();b.style.display="none"}else throw 0}catch(e){b.value="";b.placeholder="That backup could not be read. Paste a valid backup."}};
+show("log");render();syncSel();
+</script></body></html>
